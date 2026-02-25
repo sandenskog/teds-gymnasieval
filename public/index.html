@@ -22,6 +22,7 @@
   <!-- Nav -->
   <nav class="nav">
     <a href="#bilder" data-i18n="nav_photos">Bilder</a>
+    <a href="#filmer" data-i18n="nav_films">Filmer</a>
     <a href="#gymnasieval" data-i18n="nav_choices">Gymnasievalen</a>
     <a href="#gastbok" data-i18n="nav_guestbook">Gästbok</a>
   </nav>
@@ -48,8 +49,21 @@
     </div>
   </section>
 
+  <!-- Letterboxd filmer -->
+  <section id="filmer" class="section section-alt">
+    <h2 data-i18n="films_title">Teds filmrecensioner</h2>
+    <p class="section-intro" data-i18n="films_intro">Senaste filmerna Ted har sett och recenserat på Letterboxd:</p>
+    <div class="films-carousel" id="films-carousel">
+      <button class="carousel-btn carousel-btn-left" id="carousel-left" aria-label="Scrolla vänster">&lsaquo;</button>
+      <div class="films-track" id="films-track">
+        <!-- Films loaded via JS -->
+      </div>
+      <button class="carousel-btn carousel-btn-right" id="carousel-right" aria-label="Scrolla höger">&rsaquo;</button>
+    </div>
+  </section>
+
   <!-- Gymnasieval -->
-  <section id="gymnasieval" class="section section-alt">
+  <section id="gymnasieval" class="section">
     <h2 data-i18n="choices_title">Teds gymnasieval</h2>
     <p class="section-intro" data-i18n="choices_intro">Ted har sökt till Estetiska programmet på 16 olika skolor. Här är hela listan i prioritetsordning:</p>
 

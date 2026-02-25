@@ -36,6 +36,9 @@ const translations = {
     no_comments: "No messages yet. Be the first!",
     load_error: "Could not load messages.",
     submit_error: "Something went wrong. Try again!",
+    nav_films: "Films",
+    films_title: "Ted's film reviews",
+    films_intro: "Latest films Ted has watched and reviewed on Letterboxd:",
     footer: "Good luck Ted! We're cheering for you.",
     page_title: "Ted is starting high school!",
   },
@@ -156,3 +159,41 @@ commentForm.addEventListener('submit', async (e) => {
 });
 
 loadComments();
+
+// --- Letterboxd films ---
+function ratingToStars(rating) {
+  if (!rating) return '';
+  const full = Math.floor(rating);
+  const half = rating % 1 >= 0.5;
+  return '\u2605'.repeat(full) + (half ? '\u00BD' : '');
+}
+
+async function loadFilms() {
+  const track = document.getElementById('films-track');
+  try {
+    const res = await fetch('/api/letterboxd');
+    const films = await res.json();
+
+    track.innerHTML = films.map((film) => `
+      <a class="film-card" href="${escapeHtml(film.link)}" target="_blank" rel="noopener">
+        <div class="film-poster">
+          ${film.poster ? `<img src="${escapeHtml(film.poster)}" alt="${escapeHtml(film.filmTitle)}" loading="lazy">` : ''}
+        </div>
+        <div class="film-title">${escapeHtml(film.filmTitle)}</div>
+        <span class="film-year">${escapeHtml(film.filmYear || '')}</span>
+        ${film.rating ? `<div class="film-rating">${ratingToStars(film.rating)}</div>` : ''}
+      </a>
+    `).join('');
+  } catch {
+    track.innerHTML = '';
+  }
+}
+
+document.getElementById('carousel-left').addEventListener('click', () => {
+  document.getElementById('films-track').scrollBy({ left: -320, behavior: 'smooth' });
+});
+document.getElementById('carousel-right').addEventListener('click', () => {
+  document.getElementById('films-track').scrollBy({ left: 320, behavior: 'smooth' });
+});
+
+loadFilms();

@@ -58,6 +58,43 @@ async function sendNotification(name, message) {
   }
 }
 
+// GET Letterboxd RSS feed (cached for 15 min)
+let letterboxdCache = { data: null, expires: 0 };
+
+app.get('/api/letterboxd', async (req, res) => {
+  if (letterboxdCache.data && Date.now() < letterboxdCache.expires) {
+    return res.json(letterboxdCache.data);
+  }
+
+  try {
+    const response = await fetch('https://letterboxd.com/tedsandenskog/rss/');
+    const xml = await response.text();
+
+    const films = [];
+    const items = xml.split('<item>').slice(1);
+
+    for (const item of items) {
+      const filmTitle = item.match(/<letterboxd:filmTitle>(.*?)<\/letterboxd:filmTitle>/)?.[1];
+      if (!filmTitle) continue; // Skip non-film items (lists, etc.)
+
+      const filmYear = item.match(/<letterboxd:filmYear>(.*?)<\/letterboxd:filmYear>/)?.[1];
+      const rating = item.match(/<letterboxd:memberRating>(.*?)<\/letterboxd:memberRating>/)?.[1];
+      const watchedDate = item.match(/<letterboxd:watchedDate>(.*?)<\/letterboxd:watchedDate>/)?.[1];
+      const link = item.match(/<link>(.*?)<\/link>/)?.[1];
+      const posterMatch = item.match(/<img src="(.*?)"/);
+      const poster = posterMatch?.[1] || null;
+
+      films.push({ filmTitle, filmYear, rating: parseFloat(rating) || 0, watchedDate, link, poster });
+    }
+
+    letterboxdCache = { data: films, expires: Date.now() + 15 * 60 * 1000 };
+    res.json(films);
+  } catch (err) {
+    console.error('Letterboxd fetch error:', err.message);
+    res.status(500).json({ error: 'Could not fetch Letterboxd data' });
+  }
+});
+
 // GET all comments
 app.get('/api/comments', (req, res) => {
   const data = fs.readFileSync(COMMENTS_FILE, 'utf-8');

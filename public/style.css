@@ -107,7 +107,8 @@ body {
 
 .section-alt > h2,
 .section-alt > p,
-.section-alt > .choices-grid {
+.section-alt > .choices-grid,
+.section-alt > .films-carousel {
   max-width: 1000px;
   margin-left: auto;
   margin-right: auto;
@@ -208,6 +209,103 @@ body {
   font-size: 0.92rem;
   color: var(--warm-orange-dark);
   font-weight: 500;
+}
+
+/* Films carousel */
+.films-carousel {
+  position: relative;
+  padding: 0 40px;
+}
+
+.films-track {
+  display: flex;
+  gap: 16px;
+  overflow-x: auto;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  padding: 8px 0 16px;
+}
+
+.films-track::-webkit-scrollbar {
+  display: none;
+}
+
+.carousel-btn {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: none;
+  background: white;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+  font-size: 1.4rem;
+  color: var(--text);
+  cursor: pointer;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, transform 0.2s;
+}
+
+.carousel-btn:hover {
+  background: var(--warm-orange);
+  color: white;
+  transform: translateY(-50%) scale(1.1);
+}
+
+.carousel-btn-left { left: 0; }
+.carousel-btn-right { right: 0; }
+
+.film-card {
+  flex: 0 0 150px;
+  text-decoration: none;
+  color: var(--text);
+  transition: transform 0.2s;
+}
+
+.film-card:hover {
+  transform: translateY(-4px);
+}
+
+.film-poster {
+  width: 150px;
+  height: 225px;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  background: #e8e8e8;
+  margin-bottom: 8px;
+}
+
+.film-poster img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.film-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  line-height: 1.3;
+  margin-bottom: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.film-year {
+  font-size: 0.75rem;
+  color: var(--text-light);
+}
+
+.film-rating {
+  font-size: 0.8rem;
+  color: var(--warm-orange);
+  letter-spacing: 1px;
 }
 
 /* Comment form */
@@ -371,5 +469,18 @@ button[type="submit"]:disabled {
   .nav a {
     font-size: 0.85rem;
     padding: 6px 12px;
+  }
+
+  .films-carousel {
+    padding: 0 32px;
+  }
+
+  .film-card {
+    flex: 0 0 130px;
+  }
+
+  .film-poster {
+    width: 130px;
+    height: 195px;
   }
 }
