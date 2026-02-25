@@ -1,0 +1,4 @@
+node_modules/
+.claude/
+comments.json
+.env
